@@ -7,83 +7,115 @@
 //
 
 import SpriteKit
-import GameplayKit
 
-class GameScene: SKScene {
+private struct PhysicsCategory {
+    static let none: UInt32 = 0b0
+    static let edge: UInt32 = 0b1
+    static let circle: UInt32 = 0b10
+}
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    private let circleRadius: CGFloat = 5.0
+    private let circlesCount = 10
+    private let circleSpeed: CGFloat = 50.0
+    
+    private var lastUpdateTime: TimeInterval = 0
+    private var circles: [CircleShape] = []
+    private var isCirclesRunning = true
     
     override func didMove(to view: SKView) {
+        preparePhysics()
+        circles = generateCircles()
+    }
+    
+    private func preparePhysics() {
+        physicsWorld.gravity = CGVector.zero
+        physicsWorld.contactDelegate = self
+        physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        physicsBody!.categoryBitMask = PhysicsCategory.edge
+    }
+    
+    private func generateCircles() -> [CircleShape] {
+        let circles = generateRandomPositionCircle(radius: circleRadius, count: circlesCount, fieldSize: size)
+        circles.forEach {
+            prepareCircleToMovement($0, circleSpeed, self.size)
+            addChild($0)
+        }
+        return circles
+    }
+    
+    private func generateRandomPositionCircle(radius: CGFloat, count: Int, fieldSize: CGSize) -> [CircleShape] {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
+        var circles: [CircleShape] = []
+        for _ in 0..<count {
+            var randomPosition = CGPoint.random(maxX: Int(fieldSize.width - radius * 2),
+                                                maxY: Int(fieldSize.height - radius * 2))
+            randomPosition += radius
+            let circle = CircleShape(radius)
+            circle.zPosition = 10
+            circle.position = randomPosition
+            circles.append(circle)
         }
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        return circles
+    }
+
+    private func prepareCircleToMovement(_ circle: CircleShape, _ speed: CGFloat, _ fieldSize: CGSize) {
+        let randomPointToMove = CGPoint.random(maxX: Int(fieldSize.width), maxY: Int(fieldSize.height))
+        circle.prepareToMovement(speed, randomPointToMove)
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
+        let dt: TimeInterval
+        if lastUpdateTime > 0 {
+            dt = currentTime - lastUpdateTime
+        } else {
+            dt = 0
+        }
+        
+        lastUpdateTime = currentTime
+        
+        guard isCirclesRunning else {
+            return
+        }
+        
+        circles.forEach { self.moveCircles($0, dt) }
+    }
+    
+    private func moveCircles( _ circle: CircleShape, _ lastUpdateTimeDifference: TimeInterval) {
+        circle.position += circle.velocity * CGFloat(lastUpdateTimeDifference)
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        if collision == PhysicsCategory.edge | PhysicsCategory.circle {
+            let circle = contact.bodyA.categoryBitMask == PhysicsCategory.circle ?
+                contact.bodyA.node as! CircleShape : contact.bodyB.node as! CircleShape
             
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
+            circle.correctDirectionAfterCollision(contact.contactPoint)
+        } else if collision == PhysicsCategory.circle {
+            (contact.bodyA.node as! CircleShape).correctDirectionAfterCollision(contact.contactPoint)
+            (contact.bodyB.node as! CircleShape).correctDirectionAfterCollision(contact.contactPoint)
         }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        guard let touch = touches.first else {
+            return
+        }
+        let touchLocation = touch.location(in: self)
+
+        if !isCirclesRunning, let node = nodes(at: touchLocation).first {
+            let circle = node as! CircleShape
+            circle.selected = !circle.selected
+        } else {
+            isCirclesRunning = !isCirclesRunning
+        }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
 }
