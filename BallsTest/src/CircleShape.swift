@@ -9,9 +9,17 @@
 import Foundation
 import SpriteKit
 
+enum CircleState {
+    case neutral, correct, incorrect
+}
+
 class CircleShape: SKShapeNode {
     
-    var selected: Bool = false {
+    var neutralColor = SKColor.gray
+    var correctColor = SKColor.green
+    var incorrectColor = SKColor.red
+    
+    var state: CircleState = .neutral {
         didSet {
             updateColor()
         }
@@ -51,7 +59,13 @@ class CircleShape: SKShapeNode {
     }
     
     private func updateColor() {
-        fillColor = selected ? SKColor.green : SKColor.gray
+        let color: UIColor
+        switch state {
+            case .neutral: color = neutralColor
+            case .correct: color = correctColor
+            case .incorrect: color = incorrectColor
+        }
+        fillColor = color
     }
     
 }

@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		572D70C3201B794C00939872 /* CirclesSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D70C2201B794C00939872 /* CirclesSceneDelegate.swift */; };
+		572D70C5201B7FF000939872 /* LogicMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D70C4201B7FF000939872 /* LogicMock.swift */; };
 		97ACBF2B2018ED4800BFD9EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ACBF2A2018ED4800BFD9EC /* AppDelegate.swift */; };
-		97ACBF2D2018ED4800BFD9EC /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97ACBF2C2018ED4800BFD9EC /* GameScene.sks */; };
-		97ACBF312018ED4800BFD9EC /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ACBF302018ED4800BFD9EC /* GameScene.swift */; };
+		97ACBF312018ED4800BFD9EC /* CirclesScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ACBF302018ED4800BFD9EC /* CirclesScene.swift */; };
 		97ACBF332018ED4800BFD9EC /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ACBF322018ED4800BFD9EC /* GameViewController.swift */; };
 		97ACBF362018ED4800BFD9EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97ACBF342018ED4800BFD9EC /* Main.storyboard */; };
 		97ACBF382018ED4800BFD9EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97ACBF372018ED4800BFD9EC /* Assets.xcassets */; };
@@ -19,10 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		572D70C2201B794C00939872 /* CirclesSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesSceneDelegate.swift; sourceTree = "<group>"; };
+		572D70C4201B7FF000939872 /* LogicMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogicMock.swift; sourceTree = "<group>"; };
 		97ACBF272018ED4800BFD9EC /* BallsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BallsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97ACBF2A2018ED4800BFD9EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		97ACBF2C2018ED4800BFD9EC /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		97ACBF302018ED4800BFD9EC /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		97ACBF302018ED4800BFD9EC /* CirclesScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesScene.swift; sourceTree = "<group>"; };
 		97ACBF322018ED4800BFD9EC /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		97ACBF352018ED4800BFD9EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		97ACBF372018ED4800BFD9EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -43,6 +45,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		572D70C1201B74AE00939872 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				97ACBF302018ED4800BFD9EC /* CirclesScene.swift */,
+				97ACBF442018F72300BFD9EC /* CircleShape.swift */,
+				97ACBF422018F01100BFD9EC /* Utils.swift */,
+				572D70C2201B794C00939872 /* CirclesSceneDelegate.swift */,
+				572D70C4201B7FF000939872 /* LogicMock.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		97ACBF1E2018ED4800BFD9EC = {
 			isa = PBXGroup;
 			children = (
@@ -62,16 +76,13 @@
 		97ACBF292018ED4800BFD9EC /* BallsTest */ = {
 			isa = PBXGroup;
 			children = (
+				572D70C1201B74AE00939872 /* src */,
 				97ACBF2A2018ED4800BFD9EC /* AppDelegate.swift */,
-				97ACBF2C2018ED4800BFD9EC /* GameScene.sks */,
-				97ACBF302018ED4800BFD9EC /* GameScene.swift */,
 				97ACBF322018ED4800BFD9EC /* GameViewController.swift */,
 				97ACBF342018ED4800BFD9EC /* Main.storyboard */,
 				97ACBF372018ED4800BFD9EC /* Assets.xcassets */,
 				97ACBF392018ED4800BFD9EC /* LaunchScreen.storyboard */,
 				97ACBF3C2018ED4800BFD9EC /* Info.plist */,
-				97ACBF422018F01100BFD9EC /* Utils.swift */,
-				97ACBF442018F72300BFD9EC /* CircleShape.swift */,
 			);
 			path = BallsTest;
 			sourceTree = "<group>";
@@ -108,7 +119,7 @@
 				TargetAttributes = {
 					97ACBF262018ED4800BFD9EC = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -136,7 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97ACBF362018ED4800BFD9EC /* Main.storyboard in Resources */,
-				97ACBF2D2018ED4800BFD9EC /* GameScene.sks in Resources */,
 				97ACBF382018ED4800BFD9EC /* Assets.xcassets in Resources */,
 				97ACBF3B2018ED4800BFD9EC /* LaunchScreen.storyboard in Resources */,
 			);
@@ -149,11 +159,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97ACBF312018ED4800BFD9EC /* GameScene.swift in Sources */,
+				97ACBF312018ED4800BFD9EC /* CirclesScene.swift in Sources */,
 				97ACBF332018ED4800BFD9EC /* GameViewController.swift in Sources */,
 				97ACBF452018F72300BFD9EC /* CircleShape.swift in Sources */,
 				97ACBF2B2018ED4800BFD9EC /* AppDelegate.swift in Sources */,
 				97ACBF432018F01100BFD9EC /* Utils.swift in Sources */,
+				572D70C3201B794C00939872 /* CirclesSceneDelegate.swift in Sources */,
+				572D70C5201B7FF000939872 /* LogicMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,8 +302,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5JSRW6ED5S;
 				INFOPLIST_FILE = BallsTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amo.BallsTest;
@@ -306,8 +319,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5JSRW6ED5S;
 				INFOPLIST_FILE = BallsTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amo.BallsTest;
